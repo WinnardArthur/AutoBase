@@ -1,9 +1,8 @@
+import prisma from "@/lib/db";
 import Image from "next/image";
 
-export default function Page() {
-  return (
-   <div className="text-red-500">
-    Helo
-   </div>
-  );
+export default async function Page() {
+  const users = await prisma.user.findMany();
+
+  return <div className="text-red-500">{JSON.stringify(users)}</div>;
 }
