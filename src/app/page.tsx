@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
@@ -8,15 +8,15 @@ import { caller } from "@/trpc/server";
 export default async function Page() {
   // const { data } = authClient.useSession();
 
-  await requireAuth();
+  // await requireAuth();
 
-  const data = await caller.getUsers();
+  // const data = await caller.getUsers();
 
   return (
     <div className="min-h-screen min-w-screen flex items-center justify-center">
       PROTECTED server component....
-      {JSON.stringify(data)} 
-      {/* {!!data && <Button onClick={() => authClient.signOut()}>Logout</Button>} */}
+      {/* {JSON.stringify(data)}  */}
+      { <Button onClick={() => authClient.signOut()}>Logout</Button>}
     </div>
   );
 }

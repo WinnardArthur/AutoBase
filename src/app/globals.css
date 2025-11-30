@@ -119,4 +119,13 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  button:not([disabled]),
+  [role="button"]:not([disabled]) {
+    color: pointer;
+  }
+}
+
+.react-flow__node.selected #base-node {
+  @apply ring-3 ring-muted-foreground/25 shadow-lg;
 }

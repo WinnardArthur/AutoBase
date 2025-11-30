@@ -95,6 +95,12 @@ export const SignUpForm = () => {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/github.svg"
+                      alt="GitHub"
+                      width={24}
+                      height={24}
+                    />
                     Continue with GitHub
                   </Button>
                   <Button
@@ -103,6 +109,12 @@ export const SignUpForm = () => {
                     type="button"
                     disabled={isPending}
                   >
+                    <Image
+                      src="/google.svg"
+                      alt="GitHub"
+                      width={24}
+                      height={24}
+                    />
                     Continue with Google
                   </Button>
                 </div>

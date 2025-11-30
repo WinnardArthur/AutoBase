@@ -1,11 +1,12 @@
 import { ReactNode } from "react";
 
 import { requireIsAuthed } from "@/lib/auth-utils";
+import AuthLayout from "@/features/auth/components/auth-layout";
 
-const AuthLayout = async ({ children }: { children: ReactNode }) => {
+const Layout = async ({ children }: { children: ReactNode }) => {
   await requireIsAuthed();
 
-  return <div>{children}</div>;
+  return <AuthLayout>{children}</AuthLayout>;
 };
 
-export default AuthLayout;
+export default Layout;
