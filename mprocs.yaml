@@ -1,0 +1,6 @@
+procs:
+  inngest:
+    cmd: ["powershell", "-Command", "inngest-cli dev"]
+
+  next:
+    cmd: ["powershell", "-Command", "npm run dev"]
