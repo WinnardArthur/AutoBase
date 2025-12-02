@@ -19,13 +19,19 @@ export default function Page() {
     })
   );
 
+  const testAI = useMutation(trpc.testAI.mutationOptions());
+
   return (
-    <div className="min-h-screen min-w-screen flex items-center justify-center">
+    <div className="min-h-screen min-w-screen flex flex-col gap-8 items-center justify-center">
       PROTECTED server component....
       {JSON.stringify(data, null, 2)}
       <Button onClick={() => create.mutate()} disabled={create.isPending}>
         Create Workflow
       </Button>
+      <Button onClick={() => testAI.mutate()} disabled={testAI.isPending}>
+        Test AI
+      </Button>
+      {JSON.stringify(testAI.data)}
       {<Button onClick={() => authClient.signOut()}>Logout</Button>}
     </div>
   );
