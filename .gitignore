@@ -45,3 +45,6 @@ next-env.d.ts
 
 # mproc
 /mprocs.log
+
+# Sentry Config File
+.env.sentry-build-plugin

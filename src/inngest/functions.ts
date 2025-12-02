@@ -4,7 +4,6 @@ import { createOpenAI } from "@ai-sdk/openai";
 import { createAnthropic } from "@ai-sdk/anthropic";
 import { createXai } from "@ai-sdk/xai";
 
-
 import { inngest } from "./client";
 
 const google = createGoogleGenerativeAI();
@@ -18,6 +17,10 @@ export const execute = inngest.createFunction(
     event: "execute/ai",
   },
   async ({ event, step }) => {
+    console.log("Hello World");
+    console.log("This is a warning");
+    console.error("This is a blatant error...");
+
     const { steps: geminiSteps } = await step.ai.wrap(
       "gemini-generate-text",
       generateText,
@@ -25,6 +28,11 @@ export const execute = inngest.createFunction(
         model: google("gemini-2.5-flash"),
         system: "You are a helpful assistant.",
         prompt: "What is the Fear of the Lord",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       }
     );
 
@@ -35,6 +43,11 @@ export const execute = inngest.createFunction(
         model: openAI("gpt-4"),
         system: "You are a helpful assistant.",
         prompt: "What is the Fear of the Lord",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       }
     );
 
@@ -45,6 +58,11 @@ export const execute = inngest.createFunction(
         model: anthropic("claude-sonnet-4-5"),
         system: "You are a helpful assistant.",
         prompt: "What is the Fear of the Lord",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       }
     );
 
@@ -55,6 +73,11 @@ export const execute = inngest.createFunction(
         model: xAi("grok-3"),
         system: "You are a helpful assistant.",
         prompt: "What is the Fear of the Lord",
+        experimental_telemetry: {
+          isEnabled: true,
+          recordInputs: true,
+          recordOutputs: true,
+        },
       }
     );
 

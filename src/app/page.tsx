@@ -5,6 +5,7 @@ import { authClient } from "@/lib/auth-client";
 import { requireAuth } from "@/lib/auth-utils";
 import { useTRPC } from "@/trpc/client";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "sonner";
 
 export default function Page() {
   const trpc = useTRPC();
@@ -16,10 +17,17 @@ export default function Page() {
       onSuccess: () => {
         queryClient.invalidateQueries(trpc.getWorkflows.queryOptions());
       },
+     
     })
   );
 
-  const testAI = useMutation(trpc.testAI.mutationOptions());
+  const testAI = useMutation(
+    trpc.testAI.mutationOptions({
+      onError: (err) => {
+        toast.error(err.message)
+      },
+    })
+  );
 
   return (
     <div className="min-h-screen min-w-screen flex flex-col gap-8 items-center justify-center">
