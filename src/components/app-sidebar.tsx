@@ -24,6 +24,7 @@ import Link from "next/link";
 import { title } from "process";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
+import { authClient } from "@/lib/auth-client";
 
 const menuItems = [
   {
@@ -126,7 +127,16 @@ export const AppSidebar = () => {
             <SidebarMenuButton
               tooltip={"Sign Out"}
               className="gap-x-4 h-10 px-4"
-              onClick={() => {}}
+              onClick={() =>
+                authClient.signOut({
+                  fetchOptions: {
+                    onSuccess: () => {
+                      router.push("/login");
+                      router.refresh();
+                    },
+                  },
+                })
+              }
             >
               <LogOutIcon className="h-4 w-4" />
               <span>Sign Out</span>
