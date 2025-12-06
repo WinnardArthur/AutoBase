@@ -8,6 +8,7 @@ import {
 } from "@/features/workflows/hooks/use-workflows";
 import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import {
+  EmptyView,
   EntityContainer,
   EntityHeader,
   EntityPagination,
@@ -21,6 +22,10 @@ import { useEntitySearch } from "@/hooks/use-entity-search";
 // Workflow List
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
+
+  if (workflows.data.items.length == 0) {
+    return <WorflowsEmpty />;
+  }
 
   return <p>{JSON.stringify(workflows.data, null, 2)}</p>;
 };
@@ -116,4 +121,29 @@ export const WorkflowsLoading = () => {
 // Workflows Error View
 export const WorkflowsError = () => {
   return <ErrorView message="Error loading workflows..." />;
+};
+
+// Empty Workflows View
+export const WorflowsEmpty = () => {
+  const createWorkflow = useCreateWorkflow();
+  const { handleError, modal } = useUpgradeModal();
+
+  const handleCreate = () => {
+    createWorkflow.mutate(undefined, {
+      onError: (error) => {
+        handleError(error);
+      },
+    });
+  };
+
+  return (
+    <>
+      {modal}
+      <EmptyView
+        title="No workflows found"
+        message="You haven't created any workflows yet. Get started by creating your a workflow"
+        onNew={handleCreate}
+      />
+    </>
+  );
 };
