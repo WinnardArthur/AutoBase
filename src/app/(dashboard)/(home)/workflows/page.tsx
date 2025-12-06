@@ -10,6 +10,7 @@ import {
 import { HydrateClient } from "@/trpc/server";
 import { prefetchWorkflows } from "@/features/workflows/server/prefetch";
 import { workflowsSearchParamsLoader } from "@/features/workflows/server/search-params-loader";
+import { ErrorView } from "@/components/entity-components";
 
 type WorkflowsPageProps = {
   searchParams: Promise<SearchParams>;
@@ -23,7 +24,7 @@ const WorkflowsPage = async ({ searchParams }: WorkflowsPageProps) => {
   return (
     <WorkflowContainer>
       <HydrateClient>
-        <ErrorBoundary fallback={<p>Something went wrong</p>}>
+        <ErrorBoundary fallback={<ErrorView />}>
           <Suspense fallback={<WorkflowsLoading />}>
             <WorkflowsList />
           </Suspense>

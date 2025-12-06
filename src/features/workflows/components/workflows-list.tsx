@@ -12,6 +12,7 @@ import {
   EntityHeader,
   EntityPagination,
   EntitySearch,
+  ErrorView,
   LoadingView,
 } from "@/components/entity-components";
 import { useWorkflowSearchParams } from "../hooks/use-workflows-search-params";
@@ -107,6 +108,12 @@ export const WorkflowContainer = ({
   );
 };
 
+// Workflows Loader
 export const WorkflowsLoading = () => {
   return <LoadingView entity="workflows" />;
+};
+
+// Workflows Error View
+export const WorkflowsError = () => {
+  return <ErrorView message="Error loading workflows..." />;
 };
