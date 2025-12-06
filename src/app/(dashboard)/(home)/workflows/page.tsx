@@ -5,6 +5,7 @@ import { SearchParams } from "nuqs";
 import {
   WorkflowContainer,
   WorkflowsList,
+  WorkflowsLoading,
 } from "@/features/workflows/components/workflows-list";
 import { HydrateClient } from "@/trpc/server";
 import { prefetchWorkflows } from "@/features/workflows/server/prefetch";
@@ -23,7 +24,7 @@ const WorkflowsPage = async ({ searchParams }: WorkflowsPageProps) => {
     <WorkflowContainer>
       <HydrateClient>
         <ErrorBoundary fallback={<p>Something went wrong</p>}>
-          <Suspense fallback={<p>Loading...</p>}>
+          <Suspense fallback={<WorkflowsLoading />}>
             <WorkflowsList />
           </Suspense>
         </ErrorBoundary>
