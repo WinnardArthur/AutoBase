@@ -1,13 +1,23 @@
+import { ReactNode } from "react";
+import Link from "next/link";
 import {
   AlertTriangleIcon,
   Loader2Icon,
+  PackageOpenIcon,
   PlusIcon,
   SearchIcon,
 } from "lucide-react";
-import { Button } from "./ui/button";
-import Link from "next/link";
-import { ReactNode } from "react";
+
 import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import {
+  Empty,
+  EmptyContent,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "./ui/empty";
 
 type EntityHeaderProps = {
   title: string;
@@ -186,7 +196,6 @@ export const LoadingView = ({
   );
 };
 
-
 // Error View Component
 export const ErrorView = ({ message }: StateViewProps) => {
   return (
@@ -194,5 +203,30 @@ export const ErrorView = ({ message }: StateViewProps) => {
       <AlertTriangleIcon className="size-6 text-primary" />
       {!!message && <p className="text-sm text-muted-foreground">{message}</p>}
     </div>
+  );
+};
+
+// Empty View Component
+interface EmptyViewProps extends StateViewProps {
+  onNew?: () => void;
+  title?: string;
+}
+
+export const EmptyView = ({ message, title, onNew }: EmptyViewProps) => {
+  return (
+    <Empty className="border border-dashed bg-white">
+      <EmptyHeader>
+        <EmptyMedia variant="icon">
+          <PackageOpenIcon />
+        </EmptyMedia>
+      </EmptyHeader>
+      <EmptyTitle>{title ?? "No Items"}</EmptyTitle>
+      {!!message && <EmptyDescription>{message}</EmptyDescription>}
+      {!!onNew && (
+        <EmptyContent>
+          <Button onClick={onNew}>Add item</Button>
+        </EmptyContent>
+      )}
+    </Empty>
   );
 };
