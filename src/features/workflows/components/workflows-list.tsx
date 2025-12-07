@@ -6,28 +6,75 @@ import {
   useCreateWorkflow,
   useSuspenseWorkflows,
 } from "@/features/workflows/hooks/use-workflows";
-import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import {
   EmptyView,
   EntityContainer,
   EntityHeader,
+  EntityItem,
+  EntityList,
   EntityPagination,
   EntitySearch,
   ErrorView,
   LoadingView,
 } from "@/components/entity-components";
-import { useWorkflowSearchParams } from "../hooks/use-workflows-search-params";
+import type { Workflow } from "@/generated/prisma/client";
+import { useUpgradeModal } from "@/hooks/use-upgrade-modal";
 import { useEntitySearch } from "@/hooks/use-entity-search";
+
+import { useWorkflowSearchParams } from "../hooks/use-workflows-search-params";
+import { WorkflowIcon } from "lucide-react";
+
+// Workflow Container
+export const WorkflowContainer = ({
+  children,
+}: {
+  children: React.ReactNode;
+}) => {
+  return (
+    <EntityContainer
+      header={<WorkflowsHeader />}
+      search={<WorkflowsSearch />}
+      pagination={<WorkflowsPagination />}
+    >
+      {children}
+    </EntityContainer>
+  );
+};
 
 // Workflow List
 export const WorkflowsList = () => {
   const workflows = useSuspenseWorkflows();
 
   if (workflows.data.items.length == 0) {
-    return <WorflowsEmpty />;
+    return <WorkflowsEmpty />;
   }
 
-  return <p>{JSON.stringify(workflows.data, null, 2)}</p>;
+  return (
+    <EntityList
+      items={workflows.data.items}
+      getKey={(workflow) => workflow.id}
+      renderItem={(workflow) => <WorkflowItem data={workflow} />}
+      emptyView={<WorkflowsEmpty />}
+    />
+  );
+};
+
+// Workflow Item
+export const WorkflowItem = ({ data }: { data: Workflow }) => {
+  return (
+    <EntityItem
+      href={`/workflows/${data.id}`}
+      title={data.name}
+      subtitle={<></>}
+      image={
+        <div className="size-8 flex items-center justify-center">
+          <WorkflowIcon className="size-5 text-muted-foreground" />
+        </div>
+      }
+      onRemove={() => {}}
+      isRemoving={false}
+    />
+  );
 };
 
 // Workflow Header
@@ -96,23 +143,6 @@ export const WorkflowsPagination = () => {
   );
 };
 
-// Workflow Container
-export const WorkflowContainer = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
-  return (
-    <EntityContainer
-      header={<WorkflowsHeader />}
-      search={<WorkflowsSearch />}
-      pagination={<WorkflowsPagination />}
-    >
-      {children}
-    </EntityContainer>
-  );
-};
-
 // Workflows Loader
 export const WorkflowsLoading = () => {
   return <LoadingView entity="workflows" />;
@@ -124,7 +154,8 @@ export const WorkflowsError = () => {
 };
 
 // Empty Workflows View
-export const WorflowsEmpty = () => {
+export const WorkflowsEmpty = () => {
+  const router = useRouter();
   const createWorkflow = useCreateWorkflow();
   const { handleError, modal } = useUpgradeModal();
 
@@ -132,6 +163,9 @@ export const WorflowsEmpty = () => {
     createWorkflow.mutate(undefined, {
       onError: (error) => {
         handleError(error);
+      },
+      onSuccess: (data) => {
+        router.push(`/workflows/${data.id}`);
       },
     });
   };
