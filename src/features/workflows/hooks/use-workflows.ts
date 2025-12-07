@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { useTRPC } from "@/trpc/client";
 
 import { useWorkflowSearchParams } from "./use-workflows-search-params";
+import { GetOneInput } from "../server/prefetch";
 
 /**
  * Hook to fetch all workflows using react suspence
@@ -19,6 +20,15 @@ export const useSuspenseWorkflows = () => {
   const [searchParams] = useWorkflowSearchParams();
 
   return useSuspenseQuery(trpc.workflows.getMany.queryOptions(searchParams));
+};
+
+/**
+ * Hook to fetch a single workflow using suspense
+ */
+export const useSuspenseWorkflow = (params: GetOneInput) => {
+  const trpc = useTRPC();
+
+  return useSuspenseQuery(trpc.workflows.getOne.queryOptions(params));
 };
 
 /**
