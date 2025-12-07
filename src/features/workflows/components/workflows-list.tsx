@@ -5,6 +5,7 @@ import { formatDistanceToNow } from "date-fns";
 
 import {
   useCreateWorkflow,
+  useDeleteWorkflow,
   useSuspenseWorkflows,
 } from "@/features/workflows/hooks/use-workflows";
 import {
@@ -62,6 +63,11 @@ export const WorkflowsList = () => {
 
 // Workflow Item
 export const WorkflowItem = ({ data }: { data: Workflow }) => {
+  const deleteWorkflow = useDeleteWorkflow();
+  const handleDelete = () => {
+    deleteWorkflow.mutate({ id: data.id });
+  };
+
   return (
     <EntityItem
       href={`/workflows/${data.id}`}
@@ -78,8 +84,8 @@ export const WorkflowItem = ({ data }: { data: Workflow }) => {
           <WorkflowIcon className="size-5 text-muted-foreground" />
         </div>
       }
-      onRemove={() => {}}
-      isRemoving={false}
+      onRemove={handleDelete}
+      isRemoving={deleteWorkflow.isPending}
     />
   );
 };
