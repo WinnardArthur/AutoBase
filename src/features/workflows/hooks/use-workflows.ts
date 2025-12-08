@@ -74,3 +74,25 @@ export const useDeleteWorkflow = () => {
     })
   );
 };
+
+/**
+ * Hook to Rename workflow
+ */
+export const useRenameWorkflow = () => {
+  const trpc = useTRPC();
+  const queryClient = useQueryClient();
+
+  return useMutation(
+    trpc.workflows.rename.mutationOptions({
+      onSuccess: (data) => {
+        toast.success(`Workflow "${data.name}" renamed`);
+
+        queryClient.invalidateQueries(trpc.workflows.getMany.queryOptions({}));
+        queryClient.invalidateQueries(trpc.workflows.getOne.queryFilter({id: data.id}))
+      },
+      onError: (error) => {
+        toast.error(`Failed to rename workflow: ${error.message}`);
+      }
+    })
+  );
+};
