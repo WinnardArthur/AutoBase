@@ -1,5 +1,6 @@
 "use client";
 
+import { useCallback, useState } from "react";
 import {
   ReactFlow,
   applyEdgeChanges,
@@ -13,25 +14,21 @@ import {
   Background,
   MiniMap,
   Controls,
+  Panel,
 } from "@xyflow/react";
+import "@xyflow/react/dist/style.css";
 
 import { ErrorView, LoadingView } from "@/components/entity-components";
 import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflows";
+import { nodeComponents } from "@/config/node-components";
 
-import "@xyflow/react/dist/style.css";
-import { useCallback, useState } from "react";
-
-const initialNodes = [
-  { id: "n1", position: { x: 0, y: 0 }, data: { label: "Node 1" } },
-  { id: "n2", position: { x: 0, y: 100 }, data: { label: "Node 2" } },
-];
-const initialEdges = [{ id: "n1-n2", source: "n1", target: "n2" }];
+import { AddNodeButton } from "./add-node-button";
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow({ id: workflowId });
 
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
+  const [edges, setEdges] = useState<Edge[]>(workflow.edges);
 
   const onNodesChange = useCallback(
     (changes: NodeChange[]) =>
@@ -50,23 +47,27 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
   );
 
   return (
-    <p className="size-full">
+    <div className="size-full">
       <ReactFlow
         nodes={nodes}
         edges={edges}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
+        nodeTypes={nodeComponents}
         fitView
         // proOptions={{
         //     hideAttribution: true,
         // }}
       >
+        <Panel position="top-right">
+          <AddNodeButton />
+        </Panel>
         <Background />
         <Controls />
         <MiniMap />
       </ReactFlow>
-    </p>
+    </div>
   );
 };
 
