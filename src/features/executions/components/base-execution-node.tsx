@@ -38,14 +38,24 @@ export const BaseExecutionNode = memo(
         onSettings={onSettings}
       >
         <BaseNode onDoubleClick={onDoubleClick}>
-          {typeof Icon === "string" ? (
-            <Image src={Icon} alt={name} width={16} height={16} />
-          ) : (
-            <Icon className="size-4 text-muted-foreground" />
-          )}
-          {children}
-          <BaseHandle id={"target-1"} type="target" position={Position.Left} />
-          <BaseHandle id={"source-1"} type="source" position={Position.Right} />
+          <BaseNodeContent>
+            {typeof Icon === "string" ? (
+              <Image src={Icon} alt={name} width={16} height={16} />
+            ) : (
+              <Icon className="size-4 text-muted-foreground" />
+            )}
+            {children}
+            <BaseHandle
+              id={"target-1"}
+              type="target"
+              position={Position.Left}
+            />
+            <BaseHandle
+              id={"source-1"}
+              type="source"
+              position={Position.Right}
+            />
+          </BaseNodeContent>
         </BaseNode>
       </WorkflowNode>
     );
