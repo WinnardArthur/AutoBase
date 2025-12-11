@@ -131,11 +131,6 @@ export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
   const editor = useAtomValue(editorAtom);
   const saveWorkflow = useUpdateWorkflow();
 
-   const nodes = editor.getNodes();
-   const edges = editor.getEdges();
-
-   console.log({nodes, edges})
-
   const handleSave = () => {
     if (!editor) return;
 
