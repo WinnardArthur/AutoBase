@@ -16,6 +16,7 @@ import {
   Controls,
   Panel,
 } from "@xyflow/react";
+import { useSetAtom } from "jotai";
 import "@xyflow/react/dist/style.css";
 
 import { ErrorView, LoadingView } from "@/components/entity-components";
@@ -23,9 +24,12 @@ import { useSuspenseWorkflow } from "@/features/workflows/hooks/use-workflows";
 import { nodeComponents } from "@/config/node-components";
 
 import { AddNodeButton } from "./add-node-button";
+import { editorAtom } from "../store/atom";
 
 export const Editor = ({ workflowId }: { workflowId: string }) => {
   const { data: workflow } = useSuspenseWorkflow({ id: workflowId });
+
+  const setEditor = useSetAtom(editorAtom);
 
   const [nodes, setNodes] = useState<Node[]>(workflow.nodes);
   const [edges, setEdges] = useState<Edge[]>(workflow.edges);
@@ -55,6 +59,7 @@ export const Editor = ({ workflowId }: { workflowId: string }) => {
         onEdgesChange={onEdgesChange}
         onConnect={onConnect}
         nodeTypes={nodeComponents}
+        onInit={setEditor}
         fitView
         // proOptions={{
         //     hideAttribution: true,

@@ -16,8 +16,11 @@ import { SidebarTrigger } from "@/components/ui/sidebar";
 import {
   useRenameWorkflow,
   useSuspenseWorkflow,
+  useUpdateWorkflow,
 } from "@/features/workflows/hooks/use-workflows";
 import { Input } from "@/components/ui/input";
+import { useAtomValue } from "jotai";
+import { editorAtom } from "../store/atom";
 
 export const EditorHeader = ({ workflowId }: { workflowId: string }) => {
   return (
@@ -82,7 +85,7 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
     }
 
     try {
-      await renameWorkflow.mutateAsync ({ id: workflowId, name });
+      await renameWorkflow.mutateAsync({ id: workflowId, name });
     } catch {
       setName(workflow.name);
     } finally {
@@ -125,9 +128,27 @@ export const EditorNameInput = ({ workflowId }: { workflowId: string }) => {
 
 // Editor Save Button
 export const EditorSaveButton = ({ workflowId }: { workflowId: string }) => {
+  const editor = useAtomValue(editorAtom);
+  const saveWorkflow = useUpdateWorkflow();
+
+   const nodes = editor.getNodes();
+   const edges = editor.getEdges();
+
+   console.log({nodes, edges})
+
+  const handleSave = () => {
+    if (!editor) return;
+
+    const nodes = editor.getNodes();
+    const edges = editor.getEdges();
+
+    
+
+    saveWorkflow.mutate({ id: workflowId, nodes, edges });
+  };
   return (
     <div className="ml-auto">
-      <Button size="sm" onClick={() => {}} disabled={false}>
+      <Button size="sm" onClick={handleSave} disabled={saveWorkflow.isPending}>
         <SaveIcon />
         Save
       </Button>
